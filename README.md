@@ -1,4 +1,4 @@
-# Heading 1 A bot that claims the waifus.
+# A bot that claims the waifus.
 
 Commands implemented:
 * ~echo `message` 
