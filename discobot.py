@@ -129,7 +129,7 @@ async def on_message(message):
        message.content.startswith("~add")):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
-        waifulist.append(message.content[4:].lower())
+        waifulist.append(message.content[4:].strip())
         pickle_in.close()
         
         pickle_out=open("waifu.pickle", "wb")
@@ -142,9 +142,10 @@ async def on_message(message):
        message.content.startswith('`remove')):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
-        print(message.content[8:].lower())
-        if (message.content[8:].lower()) in waifulist:
-            waifulist.remove(message.content[8:])
+        waifu = message.content[7:].lower().strip()
+        print(waifu)
+        if (waifu) in waifulist:
+            waifulist.remove(waifu)
         pickle_in.close()
         
         pickle_out=open("waifu.pickle", "wb")
