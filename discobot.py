@@ -1,7 +1,8 @@
-import discord
-import asyncio
-from datetime import datetime
 from config import TOKEN
+from datetime import datetime
+import asyncio
+import discord
+import logging 
 
 # Client ID 567157490765266944
 
@@ -10,10 +11,18 @@ from config import TOKEN
 # https://discordapp.com/api/oauth2/authorize?client_id=567157490765266944&permissions=523328&scope=bot
 
 ''' list of waifus to claim ''' 
-waifus = ['akeno himejima', 'rias gremory', 'riven', 'ciri', 'shinoa hiragi', 'ringo noyamano', 'mikuru asahina', 'aria shichijou', 'cynthia', 'skyla', 'chika fujiwara', 'jibril', 'pharah', 'blair', 'utaha kasumigaoka', 'rydia', 'yui', 'cia', 'ai shindou', 'shizuku ninomiya', 'mitty', 'a2', '2b', '9s', 'mirai kuriyama', 'kaede azusagawa', 'shiro', 'kanna kamui', 'taiga aisaka', 'sagiri izumi', 'illyasviel von einzbern (kaleid)', 'izuna hatsuse', 'zero two', 'sakura matou', 'chiho sasaki', 'asuna', 'frey (machine-doll)']
+waifus = ['akeno himejima', 'rias gremory', 'riven', 'ciri', 'shinoa hiragi',
+          'ringo noyamano', 'mikuru asahina', 'aria shichijou', 'cynthia', 
+          'skyla', 'chika fujiwara', 'jibril', 'pharah', 'blair', 'utaha kasumigaoka', 
+          'rydia', 'yui', 'cia', 'ai shindou', 'shizuku ninomiya', 'mitty', 
+          'a2', '2b', '9s', 'mirai kuriyama', 'kaede azusagawa', 'shiro', 'kanna kamui', 
+          'taiga aisaka', 'sagiri izumi', 'illyasviel von einzbern (kaleid)', 
+          'izuna hatsuse', 'zero two', 'sakura matou', 'chiho sasaki', 'asuna', 'frey (machine-doll)',
+          'shura kirigakure']
 
 ''' list of users with access to commands '''
-users = ['220296856800854018', '175858990855487489', '141997543365017600', '95043633278885888',
+users = ['220296856800854018', '175858990855487489',
+         '141997543365017600', '95043633278885888',
          '200481198525513728', '567153956900569109']
 
 ''' INSTANTIATE CLIENT '''
@@ -33,6 +42,7 @@ async def my_background_task():
     ''' reset claim every 3 hours at xx:37:00 '''
     if (((time.hour-5) % 24) in [0, 3, 6, 9, 12, 15, 18, 21]) and (time.minute == 37) and (time.second == 0):
         claimable = True
+        logging.info('Claim reset at {}:{}:{}'.format(time.hour, time.minute, time.second))
 
 @client.event
 async def on_ready():
@@ -59,7 +69,9 @@ async def on_message(message):
     
     ''' if mudamaid 25 in this channel sees waifu in waifu list, claim '''
     if message.author.name:# == 'Mudamaid 25':
-        if message.channel.id == '564189777398726666' or message.channel.id == '567154106528170012' or message.channel.id == '566856249937756161':
+        if (message.channel.id == '564189777398726666' or 
+            message.channel.id == '567154106528170012' or 
+            message.channel.id == '566856249937756161'):
            
             await asyncio.sleep(2)
             
@@ -92,22 +104,21 @@ async def on_message(message):
     if message.author.id in users and message.content.startswith("~echo"):
         await client.send_message(message.channel, message.content[5:])
 
-    ''' react for messages '''
+    ''' react to target message IDs '''
     if message.author.id in users and message.content.startswith("~react"):
         target_message_id = message.content[6:]
-        target_message = client.get_message(message.channel, target_message_id)
-        print(target_message.content)
+        target_message = await client.get_message(message.channel, target_message_id)
         if target_message.embeds:
-            if len(target_message.reactions) < 2:
-                if target_message.reactions:
-                    await client.add_reaction(target_message, target_message.reactions[0].emoji)
+            if target_message.reactions:
+                await client.add_reaction(target_message, target_message.reactions[0].emoji)
+
 
     ''' display list '''
     if message.author.id == '220296856800854018' and message.content.startswith("~list"):
         await client.send_message(message.channel, content=str(waifus))
 
     ''' add to waifulist '''
-    if message.author.id == '220296856800854018' and message.content.startswith("~add"):
+    if message.author.id == '220296856800854018' and message.content.startswithi("~add"):
         waifus.append(message.content[4:].lower())
 
     ''' remove from waifulist '''
