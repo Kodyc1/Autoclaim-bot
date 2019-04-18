@@ -1,16 +1,14 @@
-
-A bot that claims waifus.
-
+# A bot that claims the waifus.
 
 Commands implemented:
-~echo <message> 
-- Echo command
-~add <waifu>
-- Add waifu to claim list
-~remove <waifu>
-- Remove waifu from claim list
+* ~echo `message` 
+  - Echo command
+* ~add `waifu`
+  - Add waifu to claim list
+* ~remove `waifu`
+  - Remove waifu from claim list
 
 
 Will implement:
-~react <message>
-- React on target messages
+* ~react `message`
+  - React on target messages
