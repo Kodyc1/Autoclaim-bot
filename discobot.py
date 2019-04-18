@@ -122,7 +122,7 @@ async def on_message(message):
         await client.send_message(message.channel, content=str(waifulist))
 
     ''' add to waifulist '''
-    if message.author.id == '220296856800854018' and message.content.startswithi("~add"):
+    if message.author.id == '220296856800854018' and message.content.startswith("~add"):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         waifulist.append(message.content[4:].lower())
