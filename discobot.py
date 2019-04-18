@@ -22,9 +22,7 @@ waifus = ['akeno himejima', 'rias gremory', 'riven', 'ciri', 'shinoa hiragi',
           'shura kirigakure']
 
 ''' list of users with access to commands '''
-users = ['220296856800854018', '175858990855487489',
-         '141997543365017600', '95043633278885888',
-         '200481198525513728', '567153956900569109']
+users = ['220296856800854018', '200481198525513728', '567153956900569109']
 
 ''' INSTANTIATE CLIENT '''
 client = discord.Client()
