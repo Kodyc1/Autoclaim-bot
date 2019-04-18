@@ -136,7 +136,7 @@ async def on_message(message):
     if message.author.id == '220296856800854018' and message.content.startswith('`remove'):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
-        if message.content[7:].lower() in waifus:
+        if message.content[7:].lower() in waifulist:
             waifulist.remove(message.content[7:])
         pickle_in.close()
         
