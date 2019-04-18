@@ -115,18 +115,18 @@ async def on_message(message):
 
 
     ''' display list '''
-    if message.author.id == '220296856800854018' or
-       message.author.id == '200481198525513728' and
-       message.content.startswith("~list"):
+    if ((message.author.id == '220296856800854018' or
+       message.author.id == '200481198525513728') and
+       message.content.startswith("~list")):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         pickle_in.close()
         await client.send_message(message.channel, content=str(waifulist))
 
     ''' add to waifulist '''
-    if message.author.id == '220296856800854018' or
-       message.author.id == '200481198525513728' and
-       message.content.startswith("~add"):
+    if ((message.author.id == '220296856800854018' or
+       message.author.id == '200481198525513728') and
+       message.content.startswith("~add")):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         waifulist.append(message.content[4:].lower())
@@ -137,9 +137,9 @@ async def on_message(message):
         pickle_out.close()
 
     ''' remove from waifulist '''
-    if message.author.id == '220296856800854018' or
-       message.author.id == '200481198525513728' and
-       message.content.startswith('`remove'):
+    if ((message.author.id == '220296856800854018' or
+       message.author.id == '200481198525513728') and
+       message.content.startswith('`remove')):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         print(message.content[8:].lower())
