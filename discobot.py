@@ -3,6 +3,7 @@ from datetime import datetime
 import asyncio
 import discord
 import logging 
+import pickle
 
 # Client ID 567157490765266944
 
@@ -115,16 +116,33 @@ async def on_message(message):
 
     ''' display list '''
     if message.author.id == '220296856800854018' and message.content.startswith("~list"):
-        await client.send_message(message.channel, content=str(waifus))
+        pickle_in = open("waifu.pickle", "rb")
+        waifulist = pickle.load(pickle_in)
+        pickle_in.close()
+        await client.send_message(message.channel, content=str(waifulist))
 
     ''' add to waifulist '''
     if message.author.id == '220296856800854018' and message.content.startswithi("~add"):
-        waifus.append(message.content[4:].lower())
+        pickle_in = open("waifu.pickle", "rb")
+        waifulist = pickle.load(pickle_in)
+        waifulist.append(message.content[4:].lower())
+        pickle_in.close()
+        
+        pickle_out=open("waifu.pickle", "wb")
+        pickle.dump(waifulist, pickle_out)
+        pickle_out.close()
 
     ''' remove from waifulist '''
     if message.author.id == '220296856800854018' and message.content.startswith('`remove'):
+        pickle_in = open("waifu.pickle", "rb")
+        waifulist = pickle.load(pickle_in)
         if message.content[7:].lower() in waifus:
-            waifus.remove(message.content[7:])
+            waifulist.remove(message.content[7:])
+        pickle_in.close()
+        
+        pickle_out=open("waifu.pickle", "wb")
+        pickle.dump(waifulist, pickle_out)
+        pickle_out.close()
 
 client.loop.create_task(my_background_task())
 
