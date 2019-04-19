@@ -1,5 +1,6 @@
 from config import TOKEN
 from datetime import datetime
+from pathlib import Path
 import asyncio
 import discord
 import logging 
@@ -56,6 +57,7 @@ async def on_ready():
 # waifu channel 564189777398726666
 # waifu-claimer 566856249937756161
 
+
 @client.event
 async def on_message(message):
     ''' don't respond to ourselves '''
@@ -111,21 +113,24 @@ async def on_message(message):
             if target_message.reactions:
                 await client.add_reaction(target_message, target_message.reactions[0].emoji)
 
-
     ''' display list '''
     if ((message.author.id == '220296856800854018' or
        message.author.id == '200481198525513728') and
        message.content.startswith("~list")):
+        server_file = Path(message.Guild.id + '.pickle')
+        #if server_file.exists():
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         pickle_in.close()
-        await client.add_reaction(message, '\u2705')
+        #await client.add_reaction(message, '\u2705')
         await client.send_message(message.channel, content=str(waifulist))
 
     ''' add to waifulist '''
     if ((message.author.id == '220296856800854018' or
        message.author.id == '200481198525513728') and
        message.content.startswith("~add")):
+        server_file = Path(message.Guild.id + '.pickle')
+        #if server_file.exists():
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         waifulist.append(message.content[4:].strip())
@@ -140,6 +145,8 @@ async def on_message(message):
     if ((message.author.id == '220296856800854018' or
        message.author.id == '200481198525513728') and
        message.content.startswith('`remove')):
+        server_file = Path(message.Guild.id + '.pickle')
+        #if server_file.exists():
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         waifu = message.content[7:].lower().strip()
@@ -155,7 +162,7 @@ async def on_message(message):
 
     ''' claimable? '''
     if ((message.author.id in users) and message.content.startswith('~claim')):
-        await client.add_reaction(message,'\u2705')
+        # await client.add_reaction(message,'\u2705')
         if claimable:
             await client.send_message(message.channel, content=str(claimable))
 
