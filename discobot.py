@@ -119,6 +119,7 @@ async def on_message(message):
         pickle_in = open("waifu.pickle", "rb")
         waifulist = pickle.load(pickle_in)
         pickle_in.close()
+        await client.add_reaction(message, '\u2705')
         await client.send_message(message.channel, content=str(waifulist))
 
     ''' add to waifulist '''
@@ -133,6 +134,7 @@ async def on_message(message):
         pickle_out=open("waifu.pickle", "wb")
         pickle.dump(waifulist, pickle_out)
         pickle_out.close()
+        await client.add_reaction(message, '\u2705')
 
     ''' remove from waifulist '''
     if ((message.author.id == '220296856800854018' or
@@ -149,6 +151,13 @@ async def on_message(message):
         pickle_out=open("waifu.pickle", "wb")
         pickle.dump(waifulist, pickle_out)
         pickle_out.close()
+        await client.add_reaction(message, '\u2705')
+
+    ''' claimable? '''
+    if ((message.author.id in users) and message.content.startswith('~claim')):
+        await client.add_reaction(message,'\u2705')
+        if claimable:
+            await client.send_message(message.channel, content=str(claimable))
 
 client.loop.create_task(my_background_task())
 
