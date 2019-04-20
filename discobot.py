@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 import ast
 import asyncio
-import discord
+import discord # 0.16.12
 import logging 
 import pickle
 
@@ -76,14 +76,14 @@ async def on_ready():
 ### Helper functions ###
 ########################
     
-def read_pickle(server_pickle, Guild):
-    pickle_in = open(Guild + '.pickle', "rb")
+def read_pickle(server_pickle, server):
+    pickle_in = open(server + '.pickle', "rb")
     waifulist = pickle.load(pickle_in)
     pickle_in.close()
     return waifulist
 
-def write_pickle(server_pickle, Guild, data):
-    pickle_out = open(Guild + '.pickle', "wb")
+def write_pickle(server_pickle, server, data):
+    pickle_out = open(server + '.pickle', "wb")
     pickle.dump(data, pickle_out)
     pickle_out.close()
 
@@ -102,7 +102,7 @@ async def on_message(message):
     global users
     global waifus
 
-    server_pickle = Path(message.Guild.name + '.pickle')
+    server_pickle = Path(message.server.name + '.pickle')
 
 
     #########################
@@ -122,7 +122,7 @@ async def on_message(message):
                   "Message type: {} \n" +
                   "Message reactions: {} \n" +
                   "Message embeds: {} \n" +
-                  "\n").format(message.Guild,
+                  "\n").format(message.server,
                                message.channel,
                                message.author,
                                message.content,
@@ -172,23 +172,23 @@ async def on_message(message):
     if (message.content == "~list") and (message.author.id in users):
         # if pickle already exists, read from it and display it
         if server_pickle.exists():            
-            waifulist = read_pickle(server_pickle, message.Guild.name)
+            waifulist = read_pickle(server_pickle, message.server.name)
             await client.send_message(message.channel, content=str(waifulist))
             
         # else write the base list to a server.pickle and display it
         else:
             await client.send_message(message.channel, content="Creating base list")
-            write_pickle(server_pickle, message.Guild.name, waifus)
+            write_pickle(server_pickle, message.server.name, waifus)
             await client.send_message(message.channel, content=str(waifus))
 
 
     ## beta
     ''' ~set [] waifulist '''
     if ((message.author.id in users) and message.content.startswith("~set")):
-        if server_file.exists():
+        if server_pickle.exists():
             waifulist = ast.literal_eval(message.content[4:].strip())
 
-            write_pickle(server_pickle, message.Guild.name, waifulist)
+            write_pickle(server_pickle, message.server.name, waifulist)
 
             await client.add_reaction(message, '\u2705')
             
@@ -200,11 +200,11 @@ async def on_message(message):
     '''
     if ((message.author.id in users) and message.content.startswith("~add")):
         if server_pickle.exists():
-            waifulist = read_pickle(server_pickle, message.Guild.name)
+            waifulist = read_pickle(server_pickle, message.server.name)
 
             waifulist.append(message.content[4:].strip())
 
-            write_pickle(server_pickle, message.Guild.name, waifulist)
+            write_pickle(server_pickle, message.server.name, waifulist)
             
             await client.add_reaction(message, '\u2705')
 
@@ -215,14 +215,14 @@ async def on_message(message):
     '''
     if ((message.author.id in users) and message.content.startswith('`remove')):
         if server_pickle.exists():
-            waifulist = read_pickle(server_pickle, message.Guild.name)
+            waifulist = read_pickle(server_pickle, message.server.name)
         
             waifu = message.content[7:].lower().strip()
 
             if (waifu) in waifulist:
                 waifulist.remove(waifu)
 
-            write_pickle(server_pickle, message.Guild.name, waifulist)
+            write_pickle(server_pickle, message.server.name, waifulist)
 
             await client.add_reaction(message, '\u2705')
 
