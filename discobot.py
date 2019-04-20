@@ -182,15 +182,20 @@ async def on_message(message):
             await client.send_message(message.channel, content=str(waifus))
 
 
-    ## beta
+
     ''' ~set [] waifulist '''
     if ((message.author.id in users) and message.content.startswith("~set")):
         if server_pickle.exists():
             waifulist = ast.literal_eval(message.content[4:].strip())
 
-            write_pickle(server_pickle, message.server.name, waifulist)
+            if isinstance(waifulist, list):
 
-            await client.add_reaction(message, '\u2705')
+                write_pickle(server_pickle, message.server.name, waifulist)
+
+                await client.add_reaction(message, '\u2705')
+
+            else:
+                await client.send_message(message.channel, content='Must set a list')
             
 
     ''' ~add <waifu>
@@ -207,6 +212,11 @@ async def on_message(message):
             write_pickle(server_pickle, message.server.name, waifulist)
             
             await client.add_reaction(message, '\u2705')
+            
+        else:
+            await client.send_message(message.channel,
+                                      content='Claim list does not exist yet. Create a base list with **~list**')
+
 
     ''' `remove <waifu>
 
@@ -225,12 +235,15 @@ async def on_message(message):
             write_pickle(server_pickle, message.server.name, waifulist)
 
             await client.add_reaction(message, '\u2705')
-
+            
+        else:
+            await client.send_message(message.channel,
+                                      content='Claim list does not exist yet. Create a base list with **~list**')
 
     ''' ~claim  '''
     ''' if claimable, return True, else return False '''
     if ((message.author.id in users) and (message.content == '~claim')):
-        await client.add_reaction(message,'\u2705')
+        #await client.add_reaction(message,'\u2705')
         if claimable:
             await client.send_message(message.channel, content=str(claimable))
 
