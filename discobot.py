@@ -134,7 +134,7 @@ async def on_message(message):
                 
                 if message.embeds and len(message.reactions) == 1:
                     
-                    waifulist = read_pickle(server_pickle)
+                    waifulist = read_pickle(server_pickle, message.server.name)
                     
                     if message.embeds[0]['author']['name'].lower() in waifulist:
 
@@ -184,7 +184,7 @@ async def on_message(message):
 
 
     ''' ~set [] waifulist '''
-    if ((message.author.id in users) and message.content.startswith("~set")):
+    if (message.content.startswith("~set") and (message.author.id in users)):
         if server_pickle.exists():
             waifulist = ast.literal_eval(message.content[4:].strip())
 
@@ -203,7 +203,7 @@ async def on_message(message):
     adds a waifu to waifulist
 
     '''
-    if ((message.author.id in users) and message.content.startswith("~add")):
+    if (message.content.startswith("~add") and (message.author.id in users)):
         if server_pickle.exists():
             waifulist = read_pickle(server_pickle, message.server.name)
 
@@ -223,7 +223,7 @@ async def on_message(message):
     removes a waifu from waifulist
 
     '''
-    if ((message.author.id in users) and message.content.startswith('`remove')):
+    if (message.content.startswith('`remove') and (message.author.id in users)):
         if server_pickle.exists():
             waifulist = read_pickle(server_pickle, message.server.name)
         
