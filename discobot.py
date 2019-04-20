@@ -63,7 +63,7 @@ async def my_background_task():
     global claimable
     
     ''' reset claim every 3 hours at xx:37:00 '''
-    if (((time.hour-5) % 24) in [0, 3, 6, 9, 12, 15, 18, 21]) and (time.minute == 37) and (time.second == 0):
+    if ((time.hour in [2, 5, 8, 11, 14, 17, 20, 23]) and (time.minute == 37) and (time.second == 0):
         claimable = True
         logging.info('Claim reset at {}:{}:{}'.format(time.hour, time.minute, time.second))
 
@@ -129,19 +129,17 @@ async def on_message(message):
                                message.type,
                                message.reactions,
                                message.embeds))
-                        
-            if claimable:
+                       
                 
-                if message.embeds and message.reactions and len(message.reactions) < 2:
+            if message.embeds and message.reactions and len(message.reactions) < 2:
                     
-                    waifulist = read_pickle(server_pickle, message.server.name)
+                waifulist = read_pickle(server_pickle, message.server.name)
                     
-                    if message.embeds[0]['author']['name'].lower() in waifulist:
+                if message.embeds[0]['author']['name'].lower() in waifulist:
 
-                        await client.add_reaction(message, message.reactions[0].emoji)
+                    await client.add_reaction(message, message.reactions[0].emoji)
                         
-                        claimable = False
-
+                    
 
     ''' play ping pong '''
     if message.content == 'ping':
@@ -168,7 +166,7 @@ async def on_message(message):
 
         if target_message.embeds and target_message.reactions:
 
-                await client.add_reaction(target_message, target_message.reactions[0].emoji)
+            await client.add_reaction(target_message, target_message.reactions[0].emoji)
 
 
     ''' ~list to display wishlist '''
