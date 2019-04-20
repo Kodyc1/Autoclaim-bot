@@ -87,10 +87,10 @@ def write_pickle(server_pickle, server, data):
     pickle.dump(data, pickle_out)
     pickle_out.close()
 
+
 #######################
 ###    ON MESSAGE   ###
 #######################
-
 
 @client.event
 async def on_message(message):
@@ -132,7 +132,7 @@ async def on_message(message):
                         
             if claimable:
                 
-                if message.embeds and len(message.reactions) == 1:
+                if message.embeds and message.reactions and len(message.reactions) < 2:
                     
                     waifulist = read_pickle(server_pickle, message.server.name)
                     
@@ -147,9 +147,17 @@ async def on_message(message):
     if message.content == 'ping':
         await client.send_message(message.channel, content='pong')
         
+
+
+    ####################
+    ##### COMMANDS #####
+    ####################
+
     ''' ~echo for trade '''
     if message.author.id in users and message.content.startswith("~echo"):
+
         await client.send_message(message.channel, message.content[5:])
+
 
     ''' ~react <target_message_ID> '''
     if message.author.id in users and message.content.startswith("~react"):
@@ -161,11 +169,6 @@ async def on_message(message):
         if target_message.embeds and target_message.reactions:
 
                 await client.add_reaction(target_message, target_message.reactions[0].emoji)
-
-
-    ####################
-    ##### COMMANDS #####
-    ####################
 
 
     ''' ~list to display wishlist '''
@@ -180,7 +183,6 @@ async def on_message(message):
             await client.send_message(message.channel, content="Creating base list")
             write_pickle(server_pickle, message.server.name, waifus)
             await client.send_message(message.channel, content=str(waifus))
-
 
 
     ''' ~set [] waifulist '''
@@ -198,11 +200,7 @@ async def on_message(message):
                 await client.send_message(message.channel, content='Must set a list')
             
 
-    ''' ~add <waifu>
-
-    adds a waifu to waifulist
-
-    '''
+    ''' ~add <waifu> adds a waifu to waifulist '''
     if (message.content.startswith("~add") and (message.author.id in users)):
         if server_pickle.exists():
             waifulist = read_pickle(server_pickle, message.server.name)
@@ -218,11 +216,7 @@ async def on_message(message):
                                       content='Claim list does not exist yet. Create a base list with **~list**')
 
 
-    ''' `remove <waifu>
-
-    removes a waifu from waifulist
-
-    '''
+    ''' `remove <waifu> removes a waifu from waifulist '''
     if (message.content.startswith('`remove') and (message.author.id in users)):
         if server_pickle.exists():
             waifulist = read_pickle(server_pickle, message.server.name)
@@ -240,8 +234,8 @@ async def on_message(message):
             await client.send_message(message.channel,
                                       content='Claim list does not exist yet. Create a base list with **~list**')
 
-    ''' ~claim  '''
-    ''' if claimable, return True, else return False '''
+
+    ''' ~claim  if claimable, return True, else return False '''
     if ((message.author.id in users) and (message.content == '~claim')):
         #await client.add_reaction(message,'\u2705')
         if claimable:
