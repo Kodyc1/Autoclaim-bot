@@ -3,12 +3,13 @@
 Commands implemented:
 * ~echo `message` 
   - Echo command
+* ~list
+  - Displays claim list if it exists, else generates a base list
+* ~set
+  - Sets the waifulist
 * ~add `waifu`
   - Add waifu to claim list
-* ~remove `waifu`
+* \`remove `waifu`
   - Remove waifu from claim list
-
-
-Will implement:
 * ~react `message`
   - React on target messages
