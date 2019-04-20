@@ -63,7 +63,7 @@ async def my_background_task():
     global claimable
     
     ''' reset claim every 3 hours at xx:37:00 '''
-    if ((time.hour in [2, 5, 8, 11, 14, 17, 20, 23]) and (time.minute == 37) and (time.second == 0):
+    if ((time.hour in [2, 5, 8, 11, 14, 17, 20, 23]) and (time.minute == 37) and (time.second == 0)):
         claimable = True
         logging.info('Claim reset at {}:{}:{}'.format(time.hour, time.minute, time.second))
 
