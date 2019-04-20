@@ -114,7 +114,7 @@ async def on_message(message):
             message.channel.id == '567154106528170012' or 
             message.channel.id == '566856249937756161'):
            
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
             
             print(("Server - Channel: {} - {} \n" +
                   "Message author disc id: {} \n" +
