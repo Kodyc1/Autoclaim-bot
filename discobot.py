@@ -116,7 +116,8 @@ async def on_message(message):
            
             await asyncio.sleep(1)
             
-            print(("Server - Channel: {} - {} \n" +
+            # TODO: LOG DATA IN PROGRESS
+            logdata = ("Server - Channel: {} - {} \n" +
                   "Message author disc id: {} \n" +
                   "Message content: {} \n" +
                   "Message type: {} \n" +
@@ -129,8 +130,10 @@ async def on_message(message):
                                message.type,
                                message.reactions,
                                message.embeds))
-                       
-                
+            print(logdata)
+            f = open("logs.txt", "a+")
+            f.write(logdata)
+
             if message.embeds and message.reactions and len(message.reactions) < 2:
                     
                 waifulist = read_pickle(server_pickle, message.server.name)
