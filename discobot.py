@@ -123,13 +123,16 @@ async def on_message(message):
                   "Message type: {} \n" +
                   "Message reactions: {} \n" +
                   "Message embeds: {} \n" +
+                  "Message date: {} \n" +
                   "\n").format(message.server,
                                message.channel,
                                message.author,
                                message.content,
                                message.type,
                                message.reactions,
-                               message.embeds))
+                               message.embeds,
+                               message.created_at)
+                               #message.edited_at
             print(logdata)
             f = open("logs.txt", "a+")
             f.write(logdata)
