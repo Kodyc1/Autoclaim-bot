@@ -131,7 +131,7 @@ async def on_message(message):
                                message.type,
                                message.reactions,
                                message.embeds,
-                               message.created_at)
+                               message.timestamp)
                                #message.edited_at
             print(logdata)
             f = open("logs.txt", "a+")
