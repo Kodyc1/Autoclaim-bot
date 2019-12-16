@@ -25,3 +25,5 @@ In linux
 - sudo apt-get install python3-pip
 - sudo apt-get install tmux
 - python3 -m pip3 install discord.py==0.16.12
+- pip3 install --upgrade -r requirements.txt
+
