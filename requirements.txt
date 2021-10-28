@@ -4,7 +4,7 @@ attrs==19.1.0
 boto==2.44.0
 certifi==2019.3.9
 chardet==3.0.4
-cryptography==3.2
+cryptography==3.3.2
 discord==1.0.1
 discord.py==1.0.1
 discord.pyaio==0.16.12
